@@ -1,0 +1,104 @@
+ 
+Classe Predator:
+
+
+final private int inputLayerSize;
+    final private int hiddenLayerSize;
+    final private int outputLayerSize;
+/**
+     * Network inputs array.
+     */
+    final private int[] inputs;
+    /**
+     * Hiddden layer weights.
+     */
+    final private double[][] w1;
+    /**
+     * Output layer weights.
+     */
+    final private double[][] w2;
+    /**
+     * Hidden layer activation values.
+     */
+    final private double[] hiddenLayerOutput;
+    /**
+     * Output layer activation values.
+     */
+    final private int[] output;
+
+
+public Predator(
+            Cell cell,
+            int inputLayerSize,
+            int hiddenLayerSize,
+            int outputLayerSize) {
+        super(cell, Color.BLUE);
+        this.inputLayerSize = inputLayerSize;
+        this.hiddenLayerSize = hiddenLayerSize;
+        this.outputLayerSize = outputLayerSize;
+        inputs = new int[inputLayerSize];
+        inputs[inputs.length - 1] = -1; //bias entry
+        w1 = new double[inputLayerSize][hiddenLayerSize]; // the bias entry for the hidden layer neurons is already counted in inputLayerSize variable
+        w2 = new double[hiddenLayerSize + 1][outputLayerSize]; // + 1 due to the bias entry for the output neurons
+        hiddenLayerOutput = new double[hiddenLayerSize + 1];
+        hiddenLayerOutput[hiddenLayerSize] = -1; // the bias entry for the output neurons
+        output = new int[outputLayerSize];
+
+    }
+
+ /**
+     * Initializes the network's weights
+     * 
+     * @param weights vector of weights comming from the individual.
+     */
+
+ public void setWeights(double[] weights) {
+        //TODO
+    }
+    
+    /**
+     * Computes the output of the network for the inputs saved in the class
+     * vector "inputs".
+     *
+     */
+    private void forwardPropagation() {
+        //TODO
+    }    
+}
+
+/*This was in decide method
+ * forwardPropagation();
+               
+        //Here we are assuming that the output has two elements, only
+        if (output[0] == 0 && output[1] == 0) {
+            return Action.NORTH;
+        } else if (output[0] == 0 && output[1] == 1) {
+            return Action.SOUTH;
+        } else if (output[0] == 1 && output[1] == 0) {
+            return Action.WEST;
+        }
+        return Action.EAST;
+ */
+
+
+
+Classe Enviroment
+construtor
+
+            int predatorsNumInputs, igual no pursuitDomain problem
+
+            int predatorsNumHiddenLayers,
+            int predatorsNumOutputs
+
+
+Os novos predadores estavam a ser instanciados assim
+predators.add(new Predator(null, predatorsNumInputs, predatorsNumHiddenLayers, predatorsNumOutputs));
+
+
+//THIS METHOD SHOULD BE CALLED IN THE METHOD computeFitness BEFORE A
+    //ALL THE SIMULATIONS START.
+ public void setPredatorsWeights(double[] weights) {
+        for (Predator predator : predators) {
+            predator.setWeights(weights);
+        }
+    }
