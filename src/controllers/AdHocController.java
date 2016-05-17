@@ -4,9 +4,9 @@ import pursuitDomain.Action;
 import pursuitDomain.Environment;
 import pursuitDomain.Perception;
 
-public class AdHocController extends Controller{
+public class AdHocController extends PerceptionBasedController{
 	
-	private Perception perception;
+	
 	private Environment environment;
 	
 	public AdHocController(Environment e) {
@@ -15,12 +15,19 @@ public class AdHocController extends Controller{
 	
 	@Override
 	public Action act() {
-		
-		return null;
+		Action action = super.act();
+		return action;
 	}
 	
 	public void  setPerception(Perception p)
 	{
 		this.perception = p;
+	}
+
+	@Override
+	public Action perceptionBasedAct() {
+		Action action = null;
+		
+		return action;
 	}
 }

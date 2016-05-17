@@ -28,7 +28,7 @@ public class PanelSimulation extends JPanel implements EnvironmentListener {
     final JButton buttonSimulate = new JButton("Simulate");
 
     public PanelSimulation(MainFrame frame) {
-        this.mainFrame = mainFrame;
+        this.mainFrame = frame;
         environmentPanel.setPreferredSize(new Dimension(PANEL_SIZE, PANEL_SIZE));
         setLayout(new BorderLayout());
 
@@ -61,14 +61,15 @@ public class PanelSimulation extends JPanel implements EnvironmentListener {
         SwingWorker worker = new SwingWorker<Void, Void>() {
             @Override
             public Void doInBackground() {
-                double[] weights = mainFrame.getBestInRun().getGenome();
+                //double[] weights = mainFrame.getBestInRun().getGenome();
                 int environmentSimulations = mainFrame.getProblem().getNumEvironmentSimulations();
 
                 for (int i = 0; i < environmentSimulations; i++) {
-                    environment.setPredatorsWeights(weights);
+                    //environment.setPredatorsWeights(weights);
                     environment.initializeAgentsPositions(i);
                     environmentUpdated();
                     environment.simulate();
+                    
                 }
                 return null;
             }

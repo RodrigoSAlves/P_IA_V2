@@ -6,6 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import javax.swing.SwingWorker;
+
 import controllers.AdHocController;
 import controllers.Controller;
 import controllers.RandomController;
@@ -95,6 +97,13 @@ public class Environment {
 			for (int j = 0; j < predators.size(); j++) {
 				predators.get(j).act(this);
 
+			}
+			fireUpdatedEnvironment();
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 			if(preyIsCaught())
 			{
