@@ -6,6 +6,7 @@ package controllers;
 
 
 import java.util.ArrayList;
+import pursuitDomain.Agent;
 import java.util.Random;
 
 import pursuitDomain.Action;

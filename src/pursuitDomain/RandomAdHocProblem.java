@@ -14,6 +14,5 @@ public class RandomAdHocProblem extends Problem{
 	@Override
 	public void run() {
 		environment.simulate();
-		
 	}
 }

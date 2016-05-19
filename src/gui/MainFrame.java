@@ -190,7 +190,7 @@ public class MainFrame extends JFrame implements GAListener {
 			seriesAverage.clear();
 
 			// Switch between modes of operation using the testCase Parameter
-
+			
 			switch (testCase.getCurrent()) {
 			case (TestCase.RANDOM_CONTROLLER): {
 

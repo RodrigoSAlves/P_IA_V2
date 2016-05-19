@@ -20,17 +20,18 @@ public class Environment {
 	private final Prey prey;
 	private final int maxIterations;
 	private long seed;
+	private int environmentSize;
 
 	// MORE ATTRIBUTES?
 
-	public Environment(int size, int maxIterations, float probPreyRests, int numPredators, long seed,
+	public Environment(int environmentSize, int maxIterations, float probPreyRests, int numPredators, long seed,
 			Controller controller) {
-
+		this.environmentSize = environmentSize;
 		this.seed = seed;
 		this.maxIterations = maxIterations;
 		random = new Random();
 
-		grid = new Cell[size][size];
+		grid = new Cell[environmentSize][environmentSize];
 		for (int i = 0; i < grid.length; i++) {
 			for (int j = 0; j < grid.length; j++) {
 				grid[i][j] = new Cell(i, j);
@@ -92,57 +93,92 @@ public class Environment {
 	public void simulate() {
 		initializeAgentsPositions(seed);
 
-		for (int i = 0; i < maxIterations; i++) {
+		for (int i = 0; i < 2; i++) {
 			prey.act(this);
 			for (int j = 0; j < predators.size(); j++) {
 				predators.get(j).act(this);
 
 			}
+			
 			fireUpdatedEnvironment();
+			
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			if(preyIsCaught())
-			{
+
+			if (preyIsCaught()) {
 				System.out.println("Win");
 				return;
 			}
-			
+
 			spellPositions();
 		}
 
 	}
-	
+
 	private boolean preyIsCaught() {
 		Cell preyCell = prey.getCell();
 		ArrayList<Action> surroundingAvailebleActions = getFreeSorroundingCells(preyCell);
-		
-		if(surroundingAvailebleActions.size() == 0)
+
+		if (surroundingAvailebleActions.size() == 0)
 			return true;
-		
+
 		return false;
 	}
 
-	private void spellPositions()
-	{
-		System.out.println("Prey: Line ->"+prey.getCell().getLine() + "Column -> " + prey.getCell().getColumn()+"\n");
-		for(int i = 0; i < predators.size(); i ++)
-		{
-		System.out.println("Predator" + i + ": Line ->" + predators.get(i).getCell().getLine()+"Column -> " 
-		+ predators.get(i).getCell().getColumn() + "\n");
+	private void spellPositions() {
+		System.out
+				.println("Prey: Line ->" + prey.getCell().getLine() + "Column -> " + prey.getCell().getColumn() + "\n");
+		for (int i = 0; i < predators.size(); i++) {
+			System.out.println("Predator" + i + ": Line ->" + predators.get(i).getCell().getLine() + "Column -> "
+					+ predators.get(i).getCell().getColumn() + "Distance to prey" + computeDistanceBetweenCells(predators.get(i)) + "\n");
+			
 		}
-		
+
 	}
 
 	// COMPUTES THE SUM OF THE (SMALLEST) DISTANCES OF ALL THE PREDATORS TO THE
 	// PREY.
 	// IT TAKES INTO ACCOUNT THAT THE ENVIRONMENT IS TOROIDAL.
 	public int computePredatorsPreyDistanceSum() {
-		// TODO
+		// ??
+
 		return 0;
+	}
+
+	public double computeDistanceBetweenCells(Predator predator) {
+		int totalDistance = 0;
+		
+		int lineSimpleDistance = prey.getCell().getLine() - predator.getCell().getLine();
+		int lineTiroidalDistance = environmentSize - lineSimpleDistance;
+
+		int columnSimpleDistance = prey.getCell().getColumn() - predator.getCell().getColumn();
+		int columnTiroidalDistance = environmentSize - columnSimpleDistance;
+
+		if (lineTiroidalDistance < lineSimpleDistance) {
+			if (lineSimpleDistance > 0) {
+				lineTiroidalDistance = -1 * lineTiroidalDistance;
+				totalDistance += Math.abs(lineTiroidalDistance);
+			}
+
+		} else {
+			totalDistance += Math.abs(lineSimpleDistance);
+		}
+
+		if (columnTiroidalDistance < columnSimpleDistance) {
+			if (columnSimpleDistance > 0) {
+				
+				columnTiroidalDistance = -1 * columnTiroidalDistance;
+				totalDistance += Math.abs(columnTiroidalDistance);
+			}
+		} else {
+			totalDistance += Math.abs(columnSimpleDistance);
+		}
+
+		return totalDistance - 1;
 	}
 
 	public int getSize() {

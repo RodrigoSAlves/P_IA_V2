@@ -3,6 +3,7 @@ package controllers;
 import java.util.ArrayList;
 
 import pursuitDomain.Action;
+import pursuitDomain.Agent;
 
 public abstract class Controller {
 	
