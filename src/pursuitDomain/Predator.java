@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 import controllers.Controller;
+import controllers.PerceptionBasedController;
 
 public class Predator extends Agent {
    
@@ -17,6 +18,10 @@ public class Predator extends Agent {
     @Override
     public void act(Environment environment) {
     	setAvailableActions(environment.getFreeSorroundingCells(cell));
+    	
+    	if (controller instanceof PerceptionBasedController) {
+			((PerceptionBasedController)controller).setPerception(buildPerception(environment));
+		}
     	
         buildPerception(environment);
         Action a = decide();
@@ -36,7 +41,7 @@ public class Predator extends Agent {
 		}
 		preyPos = new Position(environment.getPrey().getCell().getLine(), environment.getPrey().getCell().getColumn());
 
-        Perception perception = new Perception(preyPos, predPositions);
+        Perception perception = new Perception(preyPos, predPositions, this);
         
     	return perception;
 
@@ -44,7 +49,6 @@ public class Predator extends Agent {
 
     private Action decide() {
         return controller.act();
-        
     }
     
     public void setController(Controller c){
@@ -64,8 +68,10 @@ public class Predator extends Agent {
             nextCell = environment.getSouthCell(cell);
         } else if (action == Action.WEST) {
             nextCell = environment.getWestCell(cell);
-        } else {
+        } else if (action == Action.EAST){
             nextCell = environment.getEastCell(cell);
+        } else {
+        	nextCell = cell;
         }
 
         if (!nextCell.hasAgent()) {

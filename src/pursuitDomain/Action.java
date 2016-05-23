@@ -1,5 +1,5 @@
 package pursuitDomain;
 
 public enum Action {
-    NORTH, SOUTH, WEST, EAST;
+    NORTH, SOUTH, WEST, EAST, WAIT;
 }
