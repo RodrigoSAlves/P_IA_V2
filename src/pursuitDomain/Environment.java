@@ -200,37 +200,41 @@ public class Environment {
 		return grid[line][column];
 	}
 
-	public ArrayList<Cell> getNearestCellAdjacentToPrey(Predator predator) {
+	public Cell[] getNearestCellAdjacentToPrey(Predator predator) {
+		
+		
+		//Do not change orders
 		Cell preyCell = prey.getCell();
 		Cell predCell = predator.getCell();
-		Cell north = getNorthCell(preyCell);
-		Cell south = getSouthCell(preyCell);
-		Cell east = getEastCell(preyCell);
-		Cell west = getWestCell(preyCell);
-
-		double northD = computeDistanceBetweenCells(predCell, north);
-		double southD = computeDistanceBetweenCells(predCell, south);
-		double eastD = computeDistanceBetweenCells(predCell, east);
-		double westD = computeDistanceBetweenCells(predCell, west);
-
-		double shortest = northD;
-		Cell nearest = north;
+		Cell[] cells = new Cell[4];
+		cells[0] = getNorthCell(preyCell);
+		cells[1] = getSouthCell(preyCell);
+		cells[2] = getEastCell(preyCell);
+		cells[3] = getWestCell(preyCell);
 		
-		ArrayList<Cell> list = new ArrayList<Cell>();
+		double[] distances = new double[cells.length];
 		
-		if (southD < shortest) {
-			nearest = south;
-			shortest = southD;
-		} else if (eastD < shortest) {
-			nearest = east;
-			shortest = eastD;
-		} else if (westD < shortest) {
-			nearest = west;
-			shortest = westD;
+		int shortestDistanceIndex;
+		for(int i = 0; i < cells.length; i++)
+		{
+			distances[i] = computeDistanceBetweenCells(predCell, cells[i]);
+			if(i != 0)
+			{ 
+				if(distances[i] < distances[i-1])
+				{
+					Cell aux = cells[i - 1];
+					//IA feita com 20;
+					
+				}
+			}else{
+				shortestDistanceIndex = 0;
+				
+			}
+			
 		}
 		
-		return list;
 
+		 return cells;
 	}
 
 	// THIS METHOD *MAY* BE USED BY THE PREY IF YOU WANT TO SELECT THE RANDOM
