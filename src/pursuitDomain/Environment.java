@@ -137,6 +137,7 @@ public class Environment {
 			System.out.println("Predator" + i + ": Line ->" + predators.get(i).getCell().getLine() + "Column -> "
 					+ predators.get(i).getCell().getColumn() + "Distance to prey"
 					+ computeDistanceBetweenCells(predators.get(i).getCell(), prey.getCell()) + "\n");
+
 			Cell[] cell = getNearestCellAdjacentToPrey(predators.get(i));
 			for(int j=0; j < cell.length; j++)
 				System.out.println(cell[j].getLine()+" - "+cell[j].getColumn());
@@ -207,6 +208,7 @@ public class Environment {
 
 	public Cell[] getNearestCellAdjacentToPrey(Predator predator) {
 		
+
 		//Do not change orders
 		Cell preyCell = prey.getCell();
 		Cell predCell = predator.getCell();

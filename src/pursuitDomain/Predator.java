@@ -23,7 +23,11 @@ public class Predator extends Agent {
 			((PerceptionBasedController)controller).setPerception(buildPerception(environment));
 		}
     	
-        buildPerception(environment);
+        if(controller instanceof PerceptionBasedController)
+        {
+        	((PerceptionBasedController)controller).setPerception(buildPerception(environment));
+        }
+        //comment
         Action a = decide();
         System.out.println(a.toString());
         execute(a, environment);
