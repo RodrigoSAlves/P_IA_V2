@@ -237,7 +237,6 @@ public class Environment {
 			}
 		}
 		
-
 		return cells;
 	}
 
