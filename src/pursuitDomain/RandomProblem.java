@@ -2,13 +2,16 @@ package pursuitDomain;
 
 import controllers.RandomController;
 
-public class RandomAdHocProblem extends Problem{
+public class RandomProblem extends Problem{
 
 	
-	public RandomAdHocProblem(long seed, int numEnvironmentRuns) {
+	public RandomProblem(long seed, int numEnvironmentRuns) {
 		super(numEnvironmentRuns);
+		
+		
 		this.environment = new Environment(environmentSize, maxIterations, probPreyRests, 
 				numPredators, seed, new RandomController(seed));
+
 	}
 
 	@Override

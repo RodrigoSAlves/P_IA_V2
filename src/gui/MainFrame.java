@@ -2,10 +2,12 @@ package gui;
 
 import pursuitDomain.PredatorIndividual;
 import pursuitDomain.Problem;
+import pursuitDomain.AdHocProblem;
 import pursuitDomain.GeneticAProblem;
 import pursuitDomain.TestCase;
 import pursuitDomain.PursuitDomainExperimentsFactory;
-import pursuitDomain.RandomAdHocProblem;
+
+import pursuitDomain.RandomProblem;
 import experiments.Experiment;
 import experiments.ExperimentEvent;
 import ga.GAEvent;
@@ -194,11 +196,17 @@ public class MainFrame extends JFrame implements GAListener {
 			switch (testCase.getCurrent()) {
 			case (TestCase.RANDOM_CONTROLLER): {
 
-				problem = new RandomAdHocProblem(
+				problem = new RandomProblem(
 						Integer.parseInt(panelParameters.jTextFieldSeed.getText().toString().trim()),
 						Integer.parseInt(panelParameters.jTextFieldNumberRuns.getText().toString().trim()));
 				problem.run();
 
+			}
+			case (TestCase.ADHOC_CONTROLLER):
+			{
+				problem = new AdHocProblem(Integer.parseInt(panelParameters.jTextFieldSeed.getText().toString().trim()),
+						Integer.parseInt(panelParameters.jTextFieldNumberRuns.getText().toString().trim()));
+				problem.run();
 			}
 			}
 		} catch (NumberFormatException e1) {

@@ -5,6 +5,7 @@ public class Perception {
 	private Predator predator;
 	private Position preyPos;
 	private Position[] predPositions;
+
 	
 	public Perception(Position preyPos, Position[] predPositions, Predator p) {
 		this.preyPos = preyPos;
@@ -16,6 +17,6 @@ public class Perception {
 	public Predator getPredator() {
 		return predator;
 	}
-	
+
 
 }

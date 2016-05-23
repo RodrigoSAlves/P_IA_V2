@@ -1,7 +1,3 @@
-/controllers/
-/experiments/
-/ga/
-/gui/
 /pursuitDomain/
-/statistics/
-/utils/
+/controllers/
+/gui/

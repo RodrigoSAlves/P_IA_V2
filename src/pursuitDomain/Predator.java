@@ -23,10 +23,6 @@ public class Predator extends Agent {
 			((PerceptionBasedController)controller).setPerception(buildPerception(environment));
 		}
     	
-        if(controller instanceof PerceptionBasedController)
-        {
-        	((PerceptionBasedController)controller).setPerception(buildPerception(environment));
-        }
         //comment
         Action a = decide();
         System.out.println(a.toString());
@@ -65,19 +61,8 @@ public class Predator extends Agent {
     }
 
     private void execute(Action action, Environment environment) {
-        Cell nextCell;
-        if (action == Action.NORTH) {
-            nextCell = environment.getNorthCell(cell);
-        } else if (action == Action.SOUTH) {
-            nextCell = environment.getSouthCell(cell);
-        } else if (action == Action.WEST) {
-            nextCell = environment.getWestCell(cell);
-        } else if (action == Action.EAST){
-            nextCell = environment.getEastCell(cell);
-        } else {
-        	nextCell = cell;
-        }
-
+        Cell nextCell = environment.getNextCell(action, cell);
+        
         if (!nextCell.hasAgent()) {
             setCell(nextCell);
         }

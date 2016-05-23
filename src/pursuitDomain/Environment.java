@@ -25,8 +25,8 @@ public class Environment {
 
 	// MORE ATTRIBUTES?
 
-	public Environment(int environmentSize, int maxIterations, float probPreyRests, int numPredators, long seed,
-			Controller controller) {
+	public Environment(int environmentSize, int maxIterations, float probPreyRests, int numPredators, 
+			long seed, Controller controller) {
 		this.environmentSize = environmentSize;
 		this.seed = seed;
 		this.maxIterations = maxIterations;
@@ -53,7 +53,8 @@ public class Environment {
 	public void setPredatorsWeights(double[] weights) {
 		// TODO
 	}
-
+	
+	
 	private ArrayList<Predator> initPredatorControllers(int numPredators, Controller c) {
 		ArrayList<Predator> list = new ArrayList<Predator>();
 
@@ -94,7 +95,7 @@ public class Environment {
 	public void simulate() {
 		initializeAgentsPositions(seed);
 
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < maxIterations; i++) {
 			prey.act(this);
 			for (int j = 0; j < predators.size(); j++) {
 				predators.get(j).act(this);
@@ -102,9 +103,9 @@ public class Environment {
 			}
 
 			fireUpdatedEnvironment();
-
+			
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(500);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -117,7 +118,23 @@ public class Environment {
 
 			spellPositions();
 		}
-
+	}
+	
+	public Cell getNextCell(Action action, Cell current)
+	{
+		Cell nextCell;
+        if (action == Action.NORTH) {
+            nextCell = getNorthCell(current);
+        } else if (action == Action.SOUTH) {
+            nextCell = getSouthCell(current);
+        } else if (action == Action.WEST) {
+            nextCell = getWestCell(current);
+        } else if (action == Action.EAST){
+            nextCell = getEastCell(current);
+        } else {
+        	nextCell = current;
+        }
+		return nextCell;
 	}
 
 	private boolean preyIsCaught() {
@@ -138,9 +155,9 @@ public class Environment {
 					+ predators.get(i).getCell().getColumn() + "Distance to prey"
 					+ computeDistanceBetweenCells(predators.get(i).getCell(), prey.getCell()) + "\n");
 
-			Cell[] cell = getNearestCellAdjacentToPrey(predators.get(i));
-			for(int j=0; j < cell.length; j++)
-				System.out.println(cell[j].getLine()+" - "+cell[j].getColumn());
+			//Cell[] cell = getNearestCellAdjacentToPrey(predators.get(i));
+			/*for(int j=0; j < cell.length; j++)
+				System.out.println(cell[j].getLine()+" - "+cell[j].getColumn());*/
 		}
 		
 		
@@ -205,38 +222,9 @@ public class Environment {
 	public final Cell getCell(int line, int column) {
 		return grid[line][column];
 	}
-
-	public Cell[] getNearestCellAdjacentToPrey(Predator predator) {
-		//Do not change orders
-		Cell preyCell = prey.getCell();
-		Cell predCell = predator.getCell();
-		Cell[] cells = new Cell[4];
-		cells[0] = getNorthCell(preyCell);
-		cells[1] = getSouthCell(preyCell);
-		cells[2] = getEastCell(preyCell);
-		cells[3] = getWestCell(preyCell);
-		
-		double[] distances = new double[cells.length];
-		
-		int shortestDistanceIndex;
-		
-		for(int i = 0; i < cells.length; i++)
-		{
-			distances[i] = computeDistanceBetweenCells(predCell, cells[i]);
-		}
-		
-		Cell aux;
-		for (int i = 0; i < distances.length-1; i++) {
-			for (int j = i+1; j < distances.length; j++)
-			if (distances[j] <= distances[i]) {
-				aux = cells[j];
-				cells[j] = cells[i];
-				cells[i] = aux;
-			}
-		}
-		
-		return cells;
-	}
+	
+	
+	
 
 	// THIS METHOD *MAY* BE USED BY THE PREY IF YOU WANT TO SELECT THE RANDOM
 	// PREY MOVEMENT JUST BETWEEN FREE SORROUNDING CELLS.
@@ -298,5 +286,28 @@ public class Environment {
 		for (EnvironmentListener listener : listeners) {
 			listener.environmentUpdated();
 		}
+	}
+
+	public boolean predatorIsAdjacentToPrey(Predator predator) {
+		
+		Cell[] cells = getCellsAdjacentToPrey();
+		
+		for(int i = 0; i < cells.length; i++)
+		{
+			if(cells[i].getAgent() == predator)
+				return true;
+		}
+		return false;
+	}
+	
+	public Cell[] getCellsAdjacentToPrey()
+	{
+		Cell preyCell = prey.getCell();
+		Cell[] cells = new Cell[4];
+		cells[0] = getNorthCell(preyCell);
+		cells[1] = getSouthCell(preyCell);
+		cells[2] = getEastCell(preyCell);
+		cells[3] = getWestCell(preyCell);
+		return cells;
 	}
 }
