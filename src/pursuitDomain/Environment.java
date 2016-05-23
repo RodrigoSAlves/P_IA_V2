@@ -224,6 +224,7 @@ public class Environment {
 		{
 			distances[i] = computeDistanceBetweenCells(predCell, cells[i]);
 		}
+		
 		Cell aux;
 		for (int i = 0; i < distances.length-1; i++) {
 			for (int j = i+1; j < distances.length; j++)
