@@ -24,7 +24,7 @@ public class AdHocController extends PerceptionBasedController{
 	@Override
 	public Action act() {
 		Action action = null;
-		
+		//comment
 		//See which cell is nearest
 		ArrayList<Cell> thisNearest = environment.getNearestCellAdjacentToPrey(perception.getPredator());
 		
