@@ -36,7 +36,7 @@ public class Predator extends Agent {
 		}
 		preyPos = new Position(environment.getPrey().getCell().getLine(), environment.getPrey().getCell().getColumn());
 
-        Perception perception = new Perception(preyPos, predPositions);
+        Perception perception = new Perception(preyPos, predPositions, this);
         
     	return perception;
 
@@ -64,8 +64,10 @@ public class Predator extends Agent {
             nextCell = environment.getSouthCell(cell);
         } else if (action == Action.WEST) {
             nextCell = environment.getWestCell(cell);
-        } else {
+        } else if (action == Action.EAST){
             nextCell = environment.getEastCell(cell);
+        }else{
+        	nextCell = cell;
         }
 
         if (!nextCell.hasAgent()) {
