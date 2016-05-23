@@ -10,6 +10,7 @@ public class Perception {
 		this.preyPos = preyPos;
 		this.predPositions = predPositions;
 		this.predator = p;
+		
 	}
 	
 	public Predator getPredator() {

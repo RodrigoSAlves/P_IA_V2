@@ -99,9 +99,9 @@ public class Environment {
 				predators.get(j).act(this);
 
 			}
-			
+
 			fireUpdatedEnvironment();
-			
+
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
@@ -134,8 +134,9 @@ public class Environment {
 				.println("Prey: Line ->" + prey.getCell().getLine() + "Column -> " + prey.getCell().getColumn() + "\n");
 		for (int i = 0; i < predators.size(); i++) {
 			System.out.println("Predator" + i + ": Line ->" + predators.get(i).getCell().getLine() + "Column -> "
-					+ predators.get(i).getCell().getColumn() + "Distance to prey" + computeDistanceBetweenCells(predators.get(i)) + "\n");
-			
+					+ predators.get(i).getCell().getColumn() + "Distance to prey"
+					+ computeDistanceBetweenCells(predators.get(i).getCell(), prey.getCell()) + "\n");
+
 		}
 
 	}
@@ -149,13 +150,15 @@ public class Environment {
 		return 0;
 	}
 
-	public double computeDistanceBetweenCells(Predator predator) {
+	public double computeDistanceBetweenCells(Cell a, Cell b) {
+
+		// Relative distance between cell a and cell b
 		int totalDistance = 0;
-		
-		int lineSimpleDistance = prey.getCell().getLine() - predator.getCell().getLine();
+
+		int lineSimpleDistance = b.getLine() - a.getLine();
 		int lineTiroidalDistance = environmentSize - lineSimpleDistance;
 
-		int columnSimpleDistance = prey.getCell().getColumn() - predator.getCell().getColumn();
+		int columnSimpleDistance = b.getColumn() - a.getColumn();
 		int columnTiroidalDistance = environmentSize - columnSimpleDistance;
 
 		if (lineTiroidalDistance < lineSimpleDistance) {
@@ -170,7 +173,7 @@ public class Environment {
 
 		if (columnTiroidalDistance < columnSimpleDistance) {
 			if (columnSimpleDistance > 0) {
-				
+
 				columnTiroidalDistance = -1 * columnTiroidalDistance;
 				totalDistance += Math.abs(columnTiroidalDistance);
 			}
@@ -195,6 +198,39 @@ public class Environment {
 
 	public final Cell getCell(int line, int column) {
 		return grid[line][column];
+	}
+
+	public ArrayList<Cell> getNearestCellAdjacentToPrey(Predator predator) {
+		Cell preyCell = prey.getCell();
+		Cell predCell = predator.getCell();
+		Cell north = getNorthCell(preyCell);
+		Cell south = getSouthCell(preyCell);
+		Cell east = getEastCell(preyCell);
+		Cell west = getWestCell(preyCell);
+
+		double northD = computeDistanceBetweenCells(predCell, north);
+		double southD = computeDistanceBetweenCells(predCell, south);
+		double eastD = computeDistanceBetweenCells(predCell, east);
+		double westD = computeDistanceBetweenCells(predCell, west);
+
+		double shortest = northD;
+		Cell nearest = north;
+		
+		ArrayList<Cell> list = new ArrayList<Cell>();
+		
+		if (southD < shortest) {
+			nearest = south;
+			shortest = southD;
+		} else if (eastD < shortest) {
+			nearest = east;
+			shortest = eastD;
+		} else if (westD < shortest) {
+			nearest = west;
+			shortest = westD;
+		}
+		
+		return list;
+
 	}
 
 	// THIS METHOD *MAY* BE USED BY THE PREY IF YOU WANT TO SELECT THE RANDOM

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 import controllers.Controller;
+import controllers.PerceptionBasedController;
 
 public class Predator extends Agent {
    
@@ -18,7 +19,11 @@ public class Predator extends Agent {
     public void act(Environment environment) {
     	setAvailableActions(environment.getFreeSorroundingCells(cell));
     	
-        buildPerception(environment);
+        if(controller instanceof PerceptionBasedController)
+        {
+        	((PerceptionBasedController)controller).setPerception(buildPerception(environment));
+        }
+        
         Action a = decide();
         System.out.println(a.toString());
         execute(a, environment);
