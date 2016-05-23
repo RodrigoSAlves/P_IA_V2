@@ -207,8 +207,6 @@ public class Environment {
 	}
 
 	public Cell[] getNearestCellAdjacentToPrey(Predator predator) {
-		
-
 		//Do not change orders
 		Cell preyCell = prey.getCell();
 		Cell predCell = predator.getCell();
