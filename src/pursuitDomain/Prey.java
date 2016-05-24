@@ -23,7 +23,7 @@ public class Prey extends Agent {
 	@Override
 	public void act(Environment environment) {
 		if (probMoveRandom.nextInt(100) > 10) {
-			setAvailableActions(environment.getFreeSorroundingCells(cell));
+			setAvailableActions(environment.getFreeSorroundingActions(cell));
 			Action a = controller.act();
 
 			execute(a, environment);

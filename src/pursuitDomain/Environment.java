@@ -139,7 +139,7 @@ public class Environment {
 
 	private boolean preyIsCaught() {
 		Cell preyCell = prey.getCell();
-		ArrayList<Action> surroundingAvailebleActions = getFreeSorroundingCells(preyCell);
+		ArrayList<Action> surroundingAvailebleActions = getFreeSorroundingActions(preyCell);
 
 		if (surroundingAvailebleActions.size() == 0)
 			return true;
@@ -174,34 +174,27 @@ public class Environment {
 	}
 
 	public double computeDistanceBetweenCells(Cell a, Cell b) {
-
+		
 		// Relative distance between cell a and cell b
 		int totalDistance = 0;
 
-		int lineSimpleDistance = b.getLine() - a.getLine();
+		int lineSimpleDistance = Math.abs(b.getLine() - a.getLine());
 		int lineTiroidalDistance = environmentSize - lineSimpleDistance;
 
-		int columnSimpleDistance = b.getColumn() - a.getColumn();
+		int columnSimpleDistance = Math.abs(b.getColumn() - a.getColumn());
 		int columnTiroidalDistance = environmentSize - columnSimpleDistance;
 
+		
 		if (lineTiroidalDistance < lineSimpleDistance) {
-			if (lineSimpleDistance > 0) {
-				lineTiroidalDistance = -1 * lineTiroidalDistance;
-				totalDistance += Math.abs(lineTiroidalDistance);
-			}
-
+			totalDistance +=lineTiroidalDistance;
 		} else {
 			totalDistance += Math.abs(lineSimpleDistance);
 		}
 
 		if (columnTiroidalDistance < columnSimpleDistance) {
-			if (columnSimpleDistance > 0) {
-
-				columnTiroidalDistance = -1 * columnTiroidalDistance;
-				totalDistance += Math.abs(columnTiroidalDistance);
-			}
+			totalDistance += columnTiroidalDistance;
 		} else {
-			totalDistance += Math.abs(columnSimpleDistance);
+			totalDistance += columnSimpleDistance;
 		}
 
 		return totalDistance - 1;
@@ -228,7 +221,7 @@ public class Environment {
 
 	// THIS METHOD *MAY* BE USED BY THE PREY IF YOU WANT TO SELECT THE RANDOM
 	// PREY MOVEMENT JUST BETWEEN FREE SORROUNDING CELLS.
-	public ArrayList<Action> getFreeSorroundingCells(Cell cell) {
+	public ArrayList<Action> getFreeSorroundingActions(Cell cell) {
 		ArrayList<Action> freeCellsAction = new ArrayList<>();
 		if (!getNorthCell(cell).hasAgent()) {
 			freeCellsAction.add(Action.NORTH);
@@ -300,14 +293,30 @@ public class Environment {
 		return false;
 	}
 	
-	public Cell[] getCellsAdjacentToPrey()
-	{
-		Cell preyCell = prey.getCell();
+	private Cell[] getCellsAdjacentToPrey() {
 		Cell[] cells = new Cell[4];
+		Cell preyCell = prey.getCell();
+		
 		cells[0] = getNorthCell(preyCell);
 		cells[1] = getSouthCell(preyCell);
 		cells[2] = getEastCell(preyCell);
 		cells[3] = getWestCell(preyCell);
 		return cells;
+	}
+
+	public ArrayList<Cell> getFreeCellsAdjacentToPrey()
+	{
+		Cell[] cells = getCellsAdjacentToPrey();
+		ArrayList<Cell> aux = new ArrayList<Cell>();
+		
+		for(int i = 0; i < cells.length; i++)
+		{
+			if(!cells[i].hasAgent())
+			{
+				aux.add(cells[i]);
+				
+			}		
+		}
+		return aux;
 	}
 }

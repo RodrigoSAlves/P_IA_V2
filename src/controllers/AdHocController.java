@@ -35,7 +35,7 @@ public class AdHocController extends PerceptionBasedController{
 		//If no-one is closer, go to that cell;
 		
 		//See nearest cell (need array of cells) OK
-		Cell[] adjacentCells = getCellsAdjacentToPreyOrderedByDistance(perception.getPredator());
+		ArrayList<Cell> adjacentCells = getCellsAdjacentToPreyOrderedByDistance(perception.getPredator());
 		//current index
 		int cIndex = 0;
 		
@@ -45,13 +45,13 @@ public class AdHocController extends PerceptionBasedController{
 		{
 
 			//If anyone is closer, choose another cell from the array
-			if(adjacentCells[cIndex].hasAgent() ||
+			if(adjacentCells.get(cIndex).hasAgent() ||
 				environment.computeDistanceBetweenCells(perception.getPredator().getCell(), 
-				adjacentCells[cIndex]) > 
+				adjacentCells.get(cIndex)) > 
 				environment.computeDistanceBetweenCells(predators.get(i).getCell(), 
-				adjacentCells[cIndex])) 
+				adjacentCells.get(cIndex))) 
 			{
-				if(cIndex < 3)
+				if(cIndex < adjacentCells.size() - 1)
 				{
 					cIndex ++;
 					i = 0;
@@ -67,7 +67,7 @@ public class AdHocController extends PerceptionBasedController{
 		for(int i = 0; i < availableActions.size(); i++)
 		{
 			nextCell = environment.getNextCell(availableActions.get(i),predatorCell);
-			distance = environment.computeDistanceBetweenCells(nextCell, adjacentCells[cIndex]);
+			distance = environment.computeDistanceBetweenCells(nextCell, adjacentCells.get(cIndex));
 			
 			if(distance < previous)
 			{
@@ -82,31 +82,31 @@ public class AdHocController extends PerceptionBasedController{
 
 	}
 	
-	public double[] getDistancesFromMultipleCellsToPrey(Cell[] cells, Cell cell)
+	public double[] getDistancesFromMultipleCellsToPrey(ArrayList<Cell> cells, Cell cell)
 	{
-		double[] distances = new double[cells.length];
+		double[] distances = new double[cells.size()];
 
-		for(int i = 0; i < cells.length; i++)
+		for(int i = 0; i < cells.size(); i++)
 		{
-			distances[i] = environment.computeDistanceBetweenCells(cell, cells[i]);
+			distances[i] = environment.computeDistanceBetweenCells(cell, cells.get(i));
 		}
 		
 		return distances;
 	}
 	
-	public Cell[] getCellsAdjacentToPreyOrderedByDistance(Predator predator) {
+	public ArrayList<Cell> getCellsAdjacentToPreyOrderedByDistance(Predator predator) {
 		//Do not change orders
 		
-		Cell[] cells = environment.getCellsAdjacentToPrey();
+		ArrayList<Cell> cells = environment.getFreeCellsAdjacentToPrey();
 		double[] distances = getDistancesFromMultipleCellsToPrey(cells, predator.getCell());
 		Cell aux;
 		
 		for (int i = 0; i < distances.length-1; i++) {
 			for (int j = i+1; j < distances.length; j++)
 			if (distances[j] <= distances[i]) {
-				aux = cells[j];
-				cells[j] = cells[i];
-				cells[i] = aux;
+				aux = cells.get(j);
+				cells.set(j, cells.get(i));
+				cells.set(i, aux);
 			}
 		}
 				

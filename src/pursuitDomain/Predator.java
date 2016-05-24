@@ -17,7 +17,7 @@ public class Predator extends Agent {
 
     @Override
     public void act(Environment environment) {
-    	setAvailableActions(environment.getFreeSorroundingCells(cell));
+    	setAvailableActions(environment.getFreeSorroundingActions(cell));
     	
     	if (controller instanceof PerceptionBasedController) {
 			((PerceptionBasedController)controller).setPerception(buildPerception(environment));
