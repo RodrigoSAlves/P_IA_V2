@@ -55,7 +55,7 @@ public class MainFrame extends JFrame implements GAListener {
 	private TestCase testCase = TestCase.getInstace();
 	
 	//Statistics Atributes
-	private boolean buttonDataSetSelected=true;
+	private boolean buttonDataSetSelected=false;
 
 	public MainFrame() {
 		try {
@@ -186,17 +186,14 @@ public class MainFrame extends JFrame implements GAListener {
 	public void jButtonRun_actionPerformed(ActionEvent e) {
 		if (!buttonDataSetSelected) {
 			switch (testCase.getCurrent()) {
-			case TestCase.RANDOM_CONTROLLER: 
+			case (TestCase.RANDOM_CONTROLLER): 
 				String textRandom = buildStringAdHocRandom();
 				problemPanel.textArea.setText(textRandom);
 				break;
-				
-			case TestCase.ADHOC_CONTROLLER:
+			case (TestCase.ADHOC_CONTROLLER):
 				String textAdHoc = buildStringAdHocRandom();
 				problemPanel.textArea.setText(textAdHoc);
-			
 				break;
-
 			default:
 				break;
 			}
@@ -208,7 +205,6 @@ public class MainFrame extends JFrame implements GAListener {
 						JOptionPane.ERROR_MESSAGE);
 				return;
 			}*/
-
 			bestIndividualPanel.textArea.setText("");
 			seriesBestIndividual.clear();
 			seriesAverage.clear();
@@ -286,6 +282,7 @@ public class MainFrame extends JFrame implements GAListener {
 	private String buildStringAdHocRandom() {
 		StringBuilder sb = new StringBuilder();
 		
+		sb.append("Test case: "+testCase.getCurrent()+"\n");
 		sb.append("Seed: "+panelParameters.jTextFieldSeed.getText()+"\n");
 		sb.append("# of runs: "+panelParameters.jTextFieldNumberRuns.getText());
 		
