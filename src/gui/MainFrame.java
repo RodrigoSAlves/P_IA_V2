@@ -19,6 +19,10 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
 import javax.swing.*;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -26,6 +30,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import org.omg.CORBA.Environment;
 
 public class MainFrame extends JFrame implements GAListener {
 
@@ -184,27 +189,14 @@ public class MainFrame extends JFrame implements GAListener {
 
 	// btn Run listenner
 	public void jButtonRun_actionPerformed(ActionEvent e) {
-		if (!buttonDataSetSelected) {
-			switch (testCase.getCurrent()) {
-			case (TestCase.RANDOM_CONTROLLER): 
-				String textRandom = buildStringAdHocRandom();
-				problemPanel.textArea.setText(textRandom);
-				break;
-			case (TestCase.ADHOC_CONTROLLER):
-				String textAdHoc = buildStringAdHocRandom();
-				problemPanel.textArea.setText(textAdHoc);
-				break;
-			default:
-				break;
-			}
-		}
-
 		try {
 			/*if (problem == null || testCase.getCurrent() == 0) {
 				JOptionPane.showMessageDialog(this, "You must first choose a problem", "Error!",
 						JOptionPane.ERROR_MESSAGE);
 				return;
 			}*/
+			
+			
 			bestIndividualPanel.textArea.setText("");
 			seriesBestIndividual.clear();
 			seriesAverage.clear();
@@ -213,23 +205,55 @@ public class MainFrame extends JFrame implements GAListener {
 			
 			switch (testCase.getCurrent()) {
 			case (TestCase.RANDOM_CONTROLLER): {
-
+				if (!buttonDataSetSelected) {
+					String textRandom = buildStringAdHocRandom();
+					problemPanel.textArea.setText(textRandom);
+				}
 				problem = new RandomProblem(
 						Integer.parseInt(panelParameters.jTextFieldSeed.getText().toString().trim()),
 						Integer.parseInt(panelParameters.jTextFieldNumberRuns.getText().toString().trim()));
-				problem.run();
-
 			}
 			case (TestCase.ADHOC_CONTROLLER):
 			{
+				if (!buttonDataSetSelected) {
+					String textAdHoc = buildStringAdHocRandom();
+					problemPanel.textArea.setText(textAdHoc);
+				}
 				problem = new AdHocProblem(Integer.parseInt(panelParameters.jTextFieldSeed.getText().toString().trim()),
 						Integer.parseInt(panelParameters.jTextFieldNumberRuns.getText().toString().trim()));
-				problem.run();
+				
 			}
 			}
 		} catch (NumberFormatException e1) {
 			JOptionPane.showMessageDialog(this, "Wrong parameters!", "Error!", JOptionPane.ERROR_MESSAGE);
 		}
+		
+		worker = new SwingWorker<Void, Void>() {
+			
+			@Override
+			public void done() {
+				buttonStop.setEnabled(false);
+			}
+			
+			@Override
+			protected Void doInBackground() throws Exception {
+				buttonStop.setEnabled(true);
+				problem.run();
+				
+				// Best Solution :
+				// --> Distance from every predator to the prey
+				// --> If win or not
+				// --> Best run:
+					// --> Soma distancias e num de iterações
+				
+				String bestSolutionStr = buildStringBestSolution();
+				bestIndividualPanel.textArea.setText(bestSolutionStr);
+				
+				return null;
+			}
+		};
+		
+		worker.execute();
 
 		/*
 		 * Random random = new
@@ -246,7 +270,7 @@ public class MainFrame extends JFrame implements GAListener {
 		 * ga.addGAListener(this);
 		 * 
 		 * manageButtons(false, false, true, false, false, false);
-		 * 
+		 *
 		 * worker = new SwingWorker<Void, Void>() {
 		 * 
 		 * @Override public Void doInBackground() { try {
@@ -265,6 +289,21 @@ public class MainFrame extends JFrame implements GAListener {
 		 * JOptionPane.showMessageDialog(this, "Wrong parameters!", "Error!",
 		 * JOptionPane.ERROR_MESSAGE); }
 		 */
+	}
+
+	private String buildStringBestSolution() {
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append("Resultado: ");
+		sb.append(problem.getEnvironment().preyIsCaught()? "Win" : "Loss");
+		sb.append("\n");
+		for (int i = 0; i < problem.getEnvironment().getPredators().size(); i++){
+			sb.append("Predator "+(i+1)+": "+problem.getEnvironment().computeDistanceBetweenCells(problem.getEnvironment().getPredators().get(i).getCell(), 
+				problem.getEnvironment().getPrey().getCell())+"\n");
+		}
+		
+		
+		return sb.toString();
 	}
 
 	@Override

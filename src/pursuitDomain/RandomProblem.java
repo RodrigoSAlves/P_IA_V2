@@ -16,6 +16,9 @@ public class RandomProblem extends Problem{
 
 	@Override
 	public void run() {
-		environment.simulate();
+		for(int i = 0; i < numEnvironmentRuns; i++){
+			System.out.println(i);
+			environment.run();
+		}
 	}
 }

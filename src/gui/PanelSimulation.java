@@ -66,9 +66,8 @@ public class PanelSimulation extends JPanel implements EnvironmentListener {
 
                 for (int i = 0; i < environmentSimulations; i++) {
                     //environment.setPredatorsWeights(weights);
-                    environment.initializeAgentsPositions(i);
                     environmentUpdated();
-                    environment.simulate();
+                    environment.simulateBest();
                     
                 }
                 return null;

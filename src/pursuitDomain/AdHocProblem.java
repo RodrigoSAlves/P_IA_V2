@@ -16,7 +16,7 @@ public class AdHocProblem extends Problem{
 
 	@Override
 	public void run() {
-		environment.simulate();
+		environment.run();
 	}
 
 }

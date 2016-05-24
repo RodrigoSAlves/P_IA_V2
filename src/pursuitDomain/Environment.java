@@ -23,6 +23,7 @@ public class Environment {
 	private final int maxIterations;
 	private long seed;
 	private int environmentSize;
+	private Cell[][] agentsActions;
 
 	// MORE ATTRIBUTES?
 
@@ -32,6 +33,7 @@ public class Environment {
 		this.seed = seed;
 		this.maxIterations = maxIterations;
 		random = new Random();
+		agentsActions = new Cell[numPredators+1][maxIterations];
 
 		grid = new Cell[environmentSize][environmentSize];
 		for (int i = 0; i < grid.length; i++) {
@@ -93,20 +95,21 @@ public class Environment {
 
 	// MAKES A SIMULATION OF THE ENVIRONMENT. THE AGENTS START IN THE POSITIONS
 	// WHERE THEY WHERE PLACED IN METHOD initializeAgentsPositions.
-	public void simulate() {
+	public void run() {
+
 		initializeAgentsPositions(seed);
 
 		for (int i = 0; i < maxIterations; i++) {
+
 			prey.act(this);
+			agentsActions[0][i]=prey.getCell();
 			for (int j = 0; j < predators.size(); j++) {
 				predators.get(j).act(this);
-
+				agentsActions[j+1][i]=predators.get(j).getCell();
 			}
-
-			fireUpdatedEnvironment();
 			
 			try {
-				Thread.sleep(500);
+				Thread.sleep(200);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -116,10 +119,10 @@ public class Environment {
 				System.out.println("Win");
 				return;
 			}
-
 			spellPositions();
 		}
 	}
+	
 	
 	public Cell getNextCell(Action action, Cell current)
 	{
@@ -138,7 +141,7 @@ public class Environment {
 		return nextCell;
 	}
 
-	private boolean preyIsCaught() {
+	public boolean preyIsCaught() {
 		Cell preyCell = prey.getCell();
 		ArrayList<Action> surroundingAvailebleActions = getFreeSorroundingActions(preyCell);
 
@@ -316,5 +319,17 @@ public class Environment {
 			}		
 		}
 		return aux;
+	}
+
+	public void simulateBest() {
+		for (int i = 0; i < maxIterations; i++) {
+			prey.setCell(agentsActions[0][i]);
+			
+			for (int j = 0; j < predators.size(); j++) {
+				predators.get(j).setCell(agentsActions[j+1][i]);
+			}
+			
+			fireUpdatedEnvironment();
+		}
 	}
 }

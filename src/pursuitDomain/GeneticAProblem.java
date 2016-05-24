@@ -19,7 +19,7 @@ public class GeneticAProblem extends Problem implements GAProblem<PredatorIndivi
     public GeneticAProblem(int numPredatorHiddenUnits, int numEnvironmentRuns){
     	super(numEnvironmentRuns);
     	
-        this.predatorsNumInputs = 100; //THIS IS A FALSE NUMBER; PLEASE ADAPT TO YOUR CASE
+        this.predatorsNumInputs = 100 ; //THIS IS A FALSE NUMBER; PLEASE ADAPT TO YOUR CASE
         this.predatorsNumHiddenUnits = numPredatorHiddenUnits;
         this.predatorNumOutputs = NUM_PREDATOR_OUTPUTS;
         
@@ -84,7 +84,7 @@ public class GeneticAProblem extends Problem implements GAProblem<PredatorIndivi
 
 	@Override
 	public void run() {
-		environment.simulate();
+		environment.run();
 		
 	}
 

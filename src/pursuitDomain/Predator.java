@@ -9,6 +9,7 @@ import controllers.PerceptionBasedController;
 public class Predator extends Agent {
    
     private Controller controller;
+    private Action action;
     
     public Predator(Cell cell, Controller c) {
         super(cell, Color.BLUE);
@@ -24,11 +25,15 @@ public class Predator extends Agent {
 		}
     	
         //comment
-        Action a = decide();
-        System.out.println(a.toString());
-        execute(a, environment);
+    	action = decide();
+        System.out.println(action.toString());
+        execute(action, environment);
     }
 
+    public Action getAction() {
+		return action;
+	}
+    
     //Predator's coordinates relative to the Prey
     private Perception buildPerception(Environment environment) {
 
