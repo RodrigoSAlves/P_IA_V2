@@ -12,6 +12,7 @@ public class Prey extends Agent {
 	final private double restProbability;
 	private RandomController controller;
 	private Random probMoveRandom;
+	private Action action;
 
 	public Prey(Cell cell, double restProbability, long seed) {
 		super(cell, Color.RED);
@@ -24,10 +25,14 @@ public class Prey extends Agent {
 	public void act(Environment environment) {
 		if (probMoveRandom.nextInt(100) > 10) {
 			setAvailableActions(environment.getFreeSorroundingActions(cell));
-			Action a = controller.act();
+			action = controller.act();
 
-			execute(a, environment);
+			execute(action, environment);
 		}
+	}
+	
+	public Action getAction(){
+		return action;
 	}
 
 	public Controller getController() {

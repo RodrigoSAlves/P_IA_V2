@@ -16,6 +16,11 @@ import pursuitDomain.Predator;
 public class AdHocController extends PerceptionBasedController{
 		
 	private Environment environment;
+	private Action preyLastAction;
+	
+	//MISSING!!!!
+	//We need to know if last position of predator was adjacent to prey to control 
+	//the movement of the predator based on movement of the prey
 	
 	public void setEnvironment(Environment environment)
 	{
@@ -23,7 +28,8 @@ public class AdHocController extends PerceptionBasedController{
 	}
 	
 	@Override
-	public Action act() {	
+	public Action act() {
+		preyLastAction = environment.getPrey().getAction();
 
 		if(environment.predatorIsAdjacentToPrey(perception.getPredator()))
 		{
@@ -79,7 +85,6 @@ public class AdHocController extends PerceptionBasedController{
 		return availableActions.get(index);
 		//set course for the selected cell
 		}
-
 	}
 	
 	public double[] getDistancesFromMultipleCellsToPrey(ArrayList<Cell> cells, Cell cell)

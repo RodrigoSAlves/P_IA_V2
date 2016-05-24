@@ -12,6 +12,7 @@ import javax.swing.SwingWorker;
 import controllers.AdHocController;
 import controllers.Controller;
 import controllers.RandomController;
+import gui.MainFrame;
 
 public class Environment {
 
@@ -155,9 +156,6 @@ public class Environment {
 					+ predators.get(i).getCell().getColumn() + "Distance to prey"
 					+ computeDistanceBetweenCells(predators.get(i).getCell(), prey.getCell()) + "\n");
 
-			//Cell[] cell = getNearestCellAdjacentToPrey(predators.get(i));
-			/*for(int j=0; j < cell.length; j++)
-				System.out.println(cell[j].getLine()+" - "+cell[j].getColumn());*/
 		}
 		
 		
