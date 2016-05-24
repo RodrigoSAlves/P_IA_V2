@@ -53,6 +53,9 @@ public class MainFrame extends JFrame implements GAListener {
 	private MainFrame instance;
 	private PanelSimulation simulationPanel;
 	private TestCase testCase = TestCase.getInstace();
+	
+	//Statistics Atributes
+	private boolean buttonDataSetSelected=true;
 
 	public MainFrame() {
 		try {
@@ -170,6 +173,7 @@ public class MainFrame extends JFrame implements GAListener {
 				problemPanel.textArea.setText(problem.toString());
 				problemPanel.textArea.setCaretPosition(0);
 				buttonRun.setEnabled(true);
+				buttonDataSetSelected=true;
 			}
 		} catch (IOException e1) {
 			e1.printStackTrace(System.err);
@@ -180,6 +184,24 @@ public class MainFrame extends JFrame implements GAListener {
 
 	// btn Run listenner
 	public void jButtonRun_actionPerformed(ActionEvent e) {
+		if (!buttonDataSetSelected) {
+			switch (testCase.getCurrent()) {
+			case TestCase.RANDOM_CONTROLLER: 
+				String textRandom = buildStringAdHocRandom();
+				problemPanel.textArea.setText(textRandom);
+				break;
+				
+			case TestCase.ADHOC_CONTROLLER:
+				String textAdHoc = buildStringAdHocRandom();
+				problemPanel.textArea.setText(textAdHoc);
+			
+				break;
+
+			default:
+				break;
+			}
+		}
+
 		try {
 			/*if (problem == null || testCase.getCurrent() == 0) {
 				JOptionPane.showMessageDialog(this, "You must first choose a problem", "Error!",
@@ -258,6 +280,16 @@ public class MainFrame extends JFrame implements GAListener {
 		if (worker.isCancelled()) {
 			e.setStopped(true);
 		}
+	}
+	
+
+	private String buildStringAdHocRandom() {
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append("Seed: "+panelParameters.jTextFieldSeed.getText()+"\n");
+		sb.append("# of runs: "+panelParameters.jTextFieldNumberRuns.getText());
+		
+		return sb.toString();
 	}
 
 	@Override
