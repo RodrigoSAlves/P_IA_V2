@@ -17,8 +17,11 @@ public class RandomProblem extends Problem{
 	@Override
 	public void run() {
 		for(int i = 0; i < numEnvironmentRuns; i++){
-			System.out.println(i);
 			environment.run();
+			if(environment.computeFitness() < bestRunValue) {
+				bestRunValue=environment.computeFitness();
+				bestRun = i+1;
+			}
 		}
 	}
 }

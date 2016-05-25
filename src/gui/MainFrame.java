@@ -196,7 +196,6 @@ public class MainFrame extends JFrame implements GAListener {
 				return;
 			}*/
 			
-			
 			bestIndividualPanel.textArea.setText("");
 			seriesBestIndividual.clear();
 			seriesAverage.clear();
@@ -212,6 +211,7 @@ public class MainFrame extends JFrame implements GAListener {
 				problem = new RandomProblem(
 						Integer.parseInt(panelParameters.jTextFieldSeed.getText().toString().trim()),
 						Integer.parseInt(panelParameters.jTextFieldNumberRuns.getText().toString().trim()));
+				break;
 			}
 			case (TestCase.ADHOC_CONTROLLER):
 			{
@@ -238,6 +238,7 @@ public class MainFrame extends JFrame implements GAListener {
 			@Override
 			protected Void doInBackground() throws Exception {
 				buttonStop.setEnabled(true);
+				simulationPanel.buttonSimulate.setEnabled(false);
 				problem.run();
 				
 				// Best Solution :
@@ -248,7 +249,7 @@ public class MainFrame extends JFrame implements GAListener {
 				
 				String bestSolutionStr = buildStringBestSolution();
 				bestIndividualPanel.textArea.setText(bestSolutionStr);
-				
+				simulationPanel.buttonSimulate.setEnabled(true);
 				return null;
 			}
 		};
@@ -293,15 +294,20 @@ public class MainFrame extends JFrame implements GAListener {
 
 	private String buildStringBestSolution() {
 		StringBuilder sb = new StringBuilder();
+		double totalDistance=0;
+		double distance=0;
 		
 		sb.append("Resultado: ");
 		sb.append(problem.getEnvironment().preyIsCaught()? "Win" : "Loss");
 		sb.append("\n");
 		for (int i = 0; i < problem.getEnvironment().getPredators().size(); i++){
-			sb.append("Predator "+(i+1)+": "+problem.getEnvironment().computeDistanceBetweenCells(problem.getEnvironment().getPredators().get(i).getCell(), 
-				problem.getEnvironment().getPrey().getCell())+"\n");
+			distance=problem.getEnvironment().computeDistanceBetweenCells(problem.getEnvironment().getPredators().get(i).getCell(), 
+					problem.getEnvironment().getPrey().getCell());
+			sb.append("Predator "+(i+1)+": "+distance+"\n");
+			totalDistance+=distance;
 		}
 		
+		sb.append("Best run: "+problem.getBestRun());
 		
 		return sb.toString();
 	}

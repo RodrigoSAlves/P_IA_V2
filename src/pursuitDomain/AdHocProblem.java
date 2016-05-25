@@ -16,7 +16,13 @@ public class AdHocProblem extends Problem{
 
 	@Override
 	public void run() {
-		environment.run();
+		for(int i = 0; i < numEnvironmentRuns; i++){
+			environment.run();
+			if(environment.computeFitness() < bestRunValue) {
+				bestRunValue=environment.computeFitness();
+				bestRun = i+1;
+			}
+		}
 	}
 
 }

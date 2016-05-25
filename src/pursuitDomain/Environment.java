@@ -24,6 +24,7 @@ public class Environment {
 	private long seed;
 	private int environmentSize;
 	private Cell[][] agentsActions;
+	private int numIterationsNeeded;
 
 	// MORE ATTRIBUTES?
 
@@ -109,7 +110,7 @@ public class Environment {
 			}
 			
 			try {
-				Thread.sleep(200);
+				Thread.sleep(1);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -117,6 +118,7 @@ public class Environment {
 
 			if (preyIsCaught()) {
 				System.out.println("Win");
+				numIterationsNeeded = i;
 				return;
 			}
 			spellPositions();
@@ -159,19 +161,20 @@ public class Environment {
 					+ predators.get(i).getCell().getColumn() + "Distance to prey"
 					+ computeDistanceBetweenCells(predators.get(i).getCell(), prey.getCell()) + "\n");
 
-		}
-		
-		
-		
+		}		
 	}
 
 	// COMPUTES THE SUM OF THE (SMALLEST) DISTANCES OF ALL THE PREDATORS TO THE
 	// PREY.
 	// IT TAKES INTO ACCOUNT THAT THE ENVIRONMENT IS TOROIDAL.
 	public int computePredatorsPreyDistanceSum() {
-		// ??
+		int totalDistance=0;
+		
+		for (int i = 0; i < getPredators().size(); i++){
+			totalDistance+=computeDistanceBetweenCells(getPredators().get(i).getCell(), getPrey().getCell());;
+		}
 
-		return 0;
+		return totalDistance;
 	}
 
 	public double computeDistanceBetweenCells(Cell a, Cell b) {
@@ -327,9 +330,25 @@ public class Environment {
 			
 			for (int j = 0; j < predators.size(); j++) {
 				predators.get(j).setCell(agentsActions[j+1][i]);
+			}		
+			if(preyIsCaught()){
+				i=maxIterations;
 			}
-			
 			fireUpdatedEnvironment();
 		}
+	}
+
+	public int computeFitness() {
+		int fitness=0;
+		
+		if(preyIsCaught()) {
+			fitness+=numIterationsNeeded*2;
+		}
+		else {
+			fitness+=numIterationsNeeded*2;
+			fitness+=computePredatorsPreyDistanceSum();
+		}
+		
+		return fitness;
 	}
 }

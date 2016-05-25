@@ -152,20 +152,7 @@ public class PanelParameters extends PanelAtributesValue {
 	            this.configure();
 	            this.revalidate();
 	    	}break;
-	    	case (1):{
-	    		removeParameters();
-	    		labels.add(lblSeed);
-	            valueComponents.add(jTextFieldSeed);
-	            jTextFieldSeed.addKeyListener(new IntegerTextField_KeyAdapter(null));
-	            
-	            labels.add(lblRuns);
-	            valueComponents.add(jTextFieldNumberRuns);
-	            jTextFieldNumberRuns.addKeyListener(new IntegerTextField_KeyAdapter(null));
-
-	            this.configure();
-	            this.revalidate();
-	    	}break;
-	    	
+	    	case (1):
 	    	case (2):{
 	    		removeParameters();
 	        	labels.add(lblSeed);
@@ -178,40 +165,7 @@ public class PanelParameters extends PanelAtributesValue {
 	            this.configure();
 	            this.revalidate();
 	    	}break;
-	    	case (3):{
-	    		removeParameters();
-	        	labels.add(lblSeed);
-	            valueComponents.add(jTextFieldSeed);
-	            jTextFieldSeed.addKeyListener(new IntegerTextField_KeyAdapter(null));
-	            
-	    		labels.add(lblPopSize);
-	            valueComponents.add(jTextFieldN);
-	            jTextFieldN.addKeyListener(new IntegerTextField_KeyAdapter(null));
-	
-	            labels.add(lblNumberGens);
-	            valueComponents.add(jTextFieldGenerations);
-	            jTextFieldGenerations.addKeyListener(new IntegerTextField_KeyAdapter(null));
-	
-	            labels.add(lblSelectMethod);
-	            valueComponents.add(jComboBoxSelectionMethods);
-	            jComboBoxSelectionMethods.addActionListener(new JComboBoxSelectionMethods_ActionAdapter(this));
-	
-	            labels.add(lblTournmentSize);
-	            valueComponents.add(jTextFieldTournamentSize);
-	            jTextFieldTournamentSize.addKeyListener(new IntegerTextField_KeyAdapter(null));
-	
-	            labels.add(lblRecombMethod);
-	            valueComponents.add(jComboBoxRecombinationMethods);
-	
-	            labels.add(lblRecombProb);
-	            valueComponents.add(jTextFieldProbRecombination);
-	
-	            labels.add(lblMutationProb);
-	            valueComponents.add(jTextFieldProbMutation);
-	            this.configure();
-	            this.revalidate();
-	    		
-	    	}break;
+	    	case (3):
 	    	case (4):{
 	    		removeParameters();
 	    		labels.add(lblSeed);
@@ -246,7 +200,6 @@ public class PanelParameters extends PanelAtributesValue {
 	            this.revalidate();
 	    	}break;
     	}
-
     }
 	private void removeParameters() {
 		labels.removeAll(labels);

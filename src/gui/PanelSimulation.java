@@ -62,14 +62,11 @@ public class PanelSimulation extends JPanel implements EnvironmentListener {
             @Override
             public Void doInBackground() {
                 //double[] weights = mainFrame.getBestInRun().getGenome();
-                int environmentSimulations = mainFrame.getProblem().getNumEvironmentSimulations();
-
-                for (int i = 0; i < environmentSimulations; i++) {
-                    //environment.setPredatorsWeights(weights);
-                    environmentUpdated();
-                    environment.simulateBest();
+                
+                //environment.setPredatorsWeights(weights);
+                environmentUpdated();
+                environment.simulateBest();
                     
-                }
                 return null;
             }
 
